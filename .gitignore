@@ -1,0 +1,7 @@
+
+*.suo
+/.vs/PlateLicense/v15/Server/sqlite3/db.lock
+/.vs/PlateLicense/v15/Server/sqlite3/storage.ide
+/.vs/PlateLicense/v15/Server/sqlite3/storage.ide-shm
+/.vs/PlateLicense/v15/Server/sqlite3/storage.ide-wal
+/PlatesLicense/.gitattributes
