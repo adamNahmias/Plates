@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1401
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlateLicense", "PlateLicense\PlateLicense.csproj", "{94C7B939-3AFB-4997-B993-5A599621771E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlateLicense", "PlateLicense.csproj", "{94C7B939-3AFB-4997-B993-5A599621771E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +20,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {F967685C-1015-42AE-9951-A4DEE09E70D7}
+		SolutionGuid = {F6F52E31-5BBC-490A-BD62-EB6CB1449A5E}
 	EndGlobalSection
 EndGlobal

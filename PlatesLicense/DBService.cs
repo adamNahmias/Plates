@@ -14,27 +14,20 @@ namespace PlateLicense
     {
         public static void insertPlateToDB(string timeStamp, string plateNumber,bool allowed,string reason)
         {
-            var settings = MongoClientSettings.FromConnectionString("mongodb+srv://root:admin@cluster0.ypypl.mongodb.net/Plates.AllowedList?retryWrites=true&w=majority");
-            settings.DirectConnection = false;
-            settings.Credential = MongoCredential.CreateCredential("Plates", "root", "admin");
-            var client = new MongoClient(settings);
-            //client.StartSession();
-            var database = client.GetDatabase("Plates");
-            var collection = database.GetCollection<BsonDocument>("AllowedList");
-            
+            MongoClient dbClient = new MongoClient("mongodb+srv://root:admin@cluster0.ypypl.mongodb.net/Plates.AllowedList?retryWrites=true&w=majority");
 
-            //    var document = new BsonDocument { { "plateNumber", plateNumber }, {
-            //        "scores",
-            //        new BsonArray {
-            //        new BsonDocument { { "type", "allowed" }, { "isAllowed", allowed.ToString() } },
-            //        new BsonDocument { { "type", "reason" }, { "reason", 74.92381029342834 } },
-            //        new BsonDocument { { "type", "timeStamp" }, { "timeStamp", timeStamp } },
-            //        }
-            //        },
-            //};
-            var document = new BsonDocument { { "id", 10000 } };
+            var dbList = dbClient.ListDatabases().ToList();
+            var database = dbClient.GetDatabase("Plates");
+            var collection = database.GetCollection<BsonDocument>("AllowedList");
+            var document = new BsonDocument { { "plateNumber", plateNumber }, {"Details",
+                    new BsonArray {
+                    new BsonDocument { { "type", "bool" }, { "isAllowed", allowed } },
+                    new BsonDocument { { "type", "string" }, { "reason", reason } },
+                    new BsonDocument { { "type", "timestamp" }, { "timeStamp", timeStamp } },
+                    }
+                    },
+            };
             collection.InsertOne(document);
-            //database.Watch();
         }
     }
 }

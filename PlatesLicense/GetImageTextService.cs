@@ -19,7 +19,7 @@ namespace PlateLicense
             request.AddParameter("apikey", "helloworld");
             IRestResponse response = client.Execute(request);
             dynamic result = JsonConvert.DeserializeObject(response.Content);
-            return result["ParsedResults"]["TextOverlay"]["Lines"]["LineText"];
+            return result["ParsedResults"][0]["TextOverlay"]["Lines"]["LineText"];
         }
     }
 }
