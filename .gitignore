@@ -12,3 +12,7 @@
 /PlatesLicense/Core/Compression/Snappy/lib/win/snappy64.dll
 /PlatesLicense/Core/Compression/Zstandard/lib/win/libzstd.dll
 /PlatesLicense/libmongocrypt.dylib
+/PlatesLicense/libmongocrypt.so
+/PlatesLicense/mongocrypt.dll
+/PlatesLicense/.vs/PlateLicense/v16/TestStore/0/000.testlog
+/PlatesLicense/.vs/PlateLicense/v16/TestStore/0/testlog.manifest

@@ -1,33 +1,64 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data.SqlClient;
-using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.Core.Clusters;
+using System.Configuration;
+using MongoDB.Bson.IO;
+using System.Collections.Generic;
 
 namespace PlateLicense
 {
     class DBService
     {
-        public static void insertPlateToDB(string timeStamp, string plateNumber,bool allowed,string reason)
-        {
-            MongoClient dbClient = new MongoClient("mongodb+srv://root:admin@cluster0.ypypl.mongodb.net/Plates.AllowedList?retryWrites=true&w=majority");
+        private string URL_CONN = "mongodb+srv://{0}:{1}@cluster0.ypypl.mongodb.net/{2}.{3}?retryWrites=true&w=majority";
+        private string DB_USER = ConfigurationManager.AppSettings["DB_USERNAME"];
+        private string DB_PASSWORD = ConfigurationManager.AppSettings["DB_PASSWORD"];
+        private static DBService dbService;
+        private static MongoClient dbClient;
+        private static IMongoDatabase database;
+        private static IMongoCollection<BsonDocument> collection;
 
-            var dbList = dbClient.ListDatabases().ToList();
-            var database = dbClient.GetDatabase("Plates");
-            var collection = database.GetCollection<BsonDocument>("AllowedList");
-            var document = new BsonDocument { { "plateNumber", plateNumber }, {"Details",
-                    new BsonArray {
-                    new BsonDocument { { "type", "bool" }, { "isAllowed", allowed } },
-                    new BsonDocument { { "type", "string" }, { "reason", reason } },
-                    new BsonDocument { { "type", "timestamp" }, { "timeStamp", timeStamp } },
-                    }
-                    },
+        public static DBService GetInstance(string dbName, string collectionName)
+        {
+            if (dbService == null || !database.DatabaseNamespace.DatabaseName.Equals(database) || !collection.CollectionNamespace.CollectionName.Equals(collection))
+            {
+                dbService = new DBService(dbName, collectionName);
+            }
+            return dbService;
+        }
+        private DBService(string dbName, string collectionName)
+        {
+            string URL = string.Format(URL_CONN, DB_USER, DB_PASSWORD, dbName, collectionName);
+            dbClient = new MongoClient(URL);
+            database = dbClient.GetDatabase(dbName);
+            collection = database.GetCollection<BsonDocument>(collectionName);
+        }
+        public void insertPlateToDB(DateTime timeStamp, string plateNumber,bool allowed,string reason)
+        {
+            try
+            {
+                var document = new BsonDocument {
+                    {"plateNumber",plateNumber },
+                    {"Allowed",allowed },
+                    {"Reason",reason },
+                    {"Date",timeStamp.Date.ToString("dd/MM/yyyy") },
+                    {"Time", timeStamp.TimeOfDay.ToString()}
             };
-            collection.InsertOne(document);
+                collection.InsertOne(document);
+                LoggerService.GetInstance().INFO(string.Format("DB Wirte, Status:success, Data: {0}",document.ToJson()));
+            }
+            catch (Exception e)
+            {
+                LoggerService.GetInstance().ERROR("DB ERROR: " + e.Message);
+            }            
+        }
+
+        public ParkingData FindDataByPlateNumber(string plateNum)
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("plateNumber", plateNum);
+            var result = collection.Find(filter).FirstOrDefault();
+            Dictionary<string, dynamic> data =result.ToDictionary();
+            ParkingData parkData = new ParkingData(data);
+            return parkData;
         }
     }
 }
