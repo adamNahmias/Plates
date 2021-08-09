@@ -40,8 +40,7 @@ namespace PlateLicense
                     {"plateNumber",plateNumber },
                     {"Allowed",allowed },
                     {"Reason",reason },
-                    {"Date",timeStamp.Date.ToString("dd/MM/yyyy") },
-                    {"Time", timeStamp.TimeOfDay.ToString()}
+                    {"TimeStamp",timeStamp }
             };
                 collection.InsertOne(document);
                 LoggerService.GetInstance().INFO(string.Format("DB Wirte, Status:success, Data: {0}",document.ToJson()));

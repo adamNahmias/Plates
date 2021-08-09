@@ -13,8 +13,7 @@ namespace PlateLicense
         public string PlateNumber { get; set; }
         public bool Allowed { get; set; }
         public string Reason { get; set; }
-        public string Date { get; set; }
-        public string Time { get; set; }
+        public DateTime TimeStamp { get; set; }
 
         public ParkingData(Dictionary<string, dynamic> data)
         {
@@ -22,8 +21,7 @@ namespace PlateLicense
             this.PlateNumber = data["plateNumber"];
             this.Allowed = data["Allowed"];
             this.Reason = data["Reason"];
-            this.Date = data["Date"];
-            this.Time = data["Time"];
+            this.TimeStamp = data["timeStamp"];
         }
     }
 }
