@@ -44,7 +44,7 @@ namespace PlateLicense
         }
         [TestMethod]
 
-        public void testMiltaryPlate1()
+        public void testMilitaryPlate1()
         {
             string filepath = @"..\..\Test Images\Military\Mili1.png";
             string platenum = ImageToTextService.getImageText(filepath);

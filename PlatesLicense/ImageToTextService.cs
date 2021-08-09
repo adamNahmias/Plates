@@ -15,8 +15,8 @@ namespace PlateLicense
         {
             if (!File.Exists(filepath))
             {
-                LoggerService.GetInstance().ERROR("Image was not found");
-                return "Image was not found";
+                LoggerService.GetInstance().ERROR(string.Format("Image was not found,filepath: {0}",filepath));
+                throw(new Exception(string.Format("Image was not found,filepath: {0}", filepath)));
             }
             double bestTextHigh = 0;
             string boldAndbestSizeWord = "";
