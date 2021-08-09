@@ -46,7 +46,7 @@ namespace PlateLicense
 
         public void testMiltaryPlate1()
         {
-            string filepath = @"..\..\Test Images\Military\Military.png";
+            string filepath = @"..\..\Test Images\Military\Mili.png";
             string platenum = ImageToTextService.getImageText(filepath);
             Assert.IsFalse(GateService.isVenichleAllowed(platenum));
             Assert.IsTrue(File.ReadAllText(LoggerService.GetInstance().LogFile).Contains("Military and law enforcement vehicles are prohibited"));
@@ -56,7 +56,7 @@ namespace PlateLicense
 
         public void testMilitaryPlate2()
         {
-            string filepath = @"..\..\Test Images\Military\Military2.png";
+            string filepath = @"..\..\Test Images\Military\Mili2.png";
             string platenum = ImageToTextService.getImageText(filepath);
             Assert.IsFalse(GateService.isVenichleAllowed(platenum));
             Assert.IsTrue(File.ReadAllText(LoggerService.GetInstance().LogFile).Contains("Military and law enforcement vehicles are prohibited"));
