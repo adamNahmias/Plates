@@ -16,7 +16,7 @@ namespace PlateLicense
             if (plateNumber == "API ERROR")
             {
                 LoggerService.GetInstance().ERROR("There was some problem to recognize your plate, please take a ticket to enter.");
-                return false;
+                throw new Exception("API ERROR");
             }
             //case emptyPlate
             if (plateNumber == "")
@@ -42,11 +42,11 @@ namespace PlateLicense
             DBService.GetInstance("Plates","AllowedList").insertPlateToDB(DateTime.Now ,plateNumber, allowed,reason);
             if (allowed)
             {
-                LoggerService.GetInstance().INFO(string.Format("Plate Number: {0} ENTER TO THE PARKING", plateNumber, reason));
+                LoggerService.GetInstance().INFO(string.Format("Plate Number: {0} ENTER TO THE PARKING", plateNumber));
             }
             else
             {
-                LoggerService.GetInstance().INFO(string.Format("Plate Number: {0} ARE NOT ALLOWED ENTER TO THE PARKING", plateNumber, reason));
+                LoggerService.GetInstance().INFO(string.Format("Plate Number: {0} NOT ALLOWED TO ENTER THE PARKING", plateNumber));
             }
             return allowed;
         }

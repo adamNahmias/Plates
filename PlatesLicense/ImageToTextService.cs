@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
@@ -12,6 +13,11 @@ namespace PlateLicense
 
         public static string getImageText(string filepath,string apiKey= "helloworld")
         {
+            if (!File.Exists(filepath))
+            {
+                LoggerService.GetInstance().ERROR("Image was not found");
+                return "Image was not found";
+            }
             double bestTextHigh = 0;
             string boldAndbestSizeWord = "";
             var client = new RestClient(API_URL);
