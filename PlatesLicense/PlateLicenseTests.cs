@@ -25,8 +25,7 @@ namespace PlateLicense
         public void testAPIError()
         {
             string filepath = @"..\..\Test Images\GoodPlates\good1.png";
-            ImageToTextService.API_KEY = "error";
-            string platenum = ImageToTextService.getImageText(filepath);
+            string platenum = ImageToTextService.getImageText(filepath, apiKey:"error");
             Assert.IsFalse(GateService.isVenichleAllowed(platenum));
             Assert.AreEqual(platenum, "API ERROR");
             Assert.IsTrue(File.ReadAllText(LoggerService.GetInstance().LogFile).Contains("There was some problem to recognize your plate, please take a ticket to enter"));

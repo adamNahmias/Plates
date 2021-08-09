@@ -19,10 +19,11 @@ namespace PlateLicense
                 return false;
             }
             //case emptyPlate
-            if (plateNumber == "" || plateNumber == null)
+            if (plateNumber == "")
             {
-                LoggerService.GetInstance().WARNING("Plate numbers which have no letters at all, cannot enter.");
-                return false;
+                reason = "Plate numbers which have no letters at all, cannot enter.";
+                allowed = false;
+                LoggerService.GetInstance().WARNING(string.Format("Plate Number: {0} NOT ALLOWED TO ENTER Reason: {1}", plateNumber, reason));
             }
             //Military case
             if(plateNumber.EndsWith("L") || plateNumber.EndsWith("M"))
@@ -39,7 +40,14 @@ namespace PlateLicense
                 LoggerService.GetInstance().WARNING(string.Format("Plate Number: {0} NOT ALLOWED TO ENTER Reason: {1}", plateNumber, reason));
             }
             DBService.GetInstance("Plates","AllowedList").insertPlateToDB(DateTime.Now ,plateNumber, allowed,reason);
-            LoggerService.GetInstance().INFO(string.Format("Plate Number: {0} ENTER TO THE PARKING", plateNumber, reason));
+            if (allowed)
+            {
+                LoggerService.GetInstance().INFO(string.Format("Plate Number: {0} ENTER TO THE PARKING", plateNumber, reason));
+            }
+            else
+            {
+                LoggerService.GetInstance().INFO(string.Format("Plate Number: {0} ARE NOT ALLOWED ENTER TO THE PARKING", plateNumber, reason));
+            }
             return allowed;
         }
     }

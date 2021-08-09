@@ -10,24 +10,21 @@ namespace PlateLicense
     {
         private static string API_URL = "https://api.ocr.space/parse/image";
 
-        public static string API_KEY { get; set; } = "helloworld";
-
-        private static string LANGUAGE = "eng";
-        public static string getImageText(string filepath)
+        public static string getImageText(string filepath,string apiKey= "helloworld")
         {
             double bestTextHigh = 0;
             string boldAndbestSizeWord = "";
             var client = new RestClient(API_URL);
             var request = new RestRequest(Method.POST);
-            request.AddParameter("language", LANGUAGE);
+            request.AddParameter("language", "eng");
             request.AddFile("file", filepath);
             request.AddParameter("isCreateSearchablePdf", "true");
             request.AddParameter("isSearchablePdfHideTextLayer", "true");
-            request.AddParameter("apikey", API_KEY);
+            request.AddParameter("apikey", apiKey);
             try
             {              
                 IRestResponse response = client.Execute(request);
-                Assert.IsTrue(response.StatusCode.Equals(HttpStatusCode.OK));
+                Assert.IsTrue(response.StatusCode.Equals(HttpStatusCode.OK),response.Content);
                 dynamic result = JsonConvert.DeserializeObject(response.Content);
                 //empty plate
                 try
