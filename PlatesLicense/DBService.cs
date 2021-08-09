@@ -48,16 +48,27 @@ namespace PlateLicense
             catch (Exception e)
             {
                 LoggerService.GetInstance().ERROR("DB ERROR: " + e.Message);
-            }            
+                throw (e);
+            }
         }
 
         public ParkingData FindDataByPlateNumber(string plateNum)
         {
-            var filter = Builders<BsonDocument>.Filter.Eq("plateNumber", plateNum);
-            var result = collection.Find(filter).FirstOrDefault();
-            Dictionary<string, dynamic> data =result.ToDictionary();
-            ParkingData parkData = new ParkingData(data);
-            return parkData;
+            try
+            {
+                var filter = Builders<BsonDocument>.Filter.Eq("plateNumber", plateNum);
+                var result = collection.Find(filter).FirstOrDefault();
+                Dictionary<string, dynamic> data = result.ToDictionary();
+                ParkingData parkData = new ParkingData(data);
+                return parkData;
+            }
+            catch(Exception e)
+            {
+                LoggerService.GetInstance().ERROR("DB ERROR: " + e.Message);
+                throw (e);
+
+            }
+
         }
     }
 }
