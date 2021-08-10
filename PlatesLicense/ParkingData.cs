@@ -21,7 +21,7 @@ namespace PlateLicense
             this.PlateNumber = data["plateNumber"];
             this.Allowed = data["Allowed"];
             this.Reason = data["Reason"];
-            this.TimeStamp = data["timeStamp"];
+            this.TimeStamp = data["TimeStamp"];
         }
     }
 }
