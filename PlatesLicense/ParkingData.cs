@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PlateLicense
 {
-    class ParkingData
+    public class ParkingData
     {
         public ObjectId ID { get; set; }
         public string PlateNumber { get; set; }

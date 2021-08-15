@@ -12,8 +12,8 @@ namespace PlateLicense
         {
             string filepath = @"..\..\Test Images\Public\public1.png";
             string platenum = ImageToTextService.getImageText(filepath);
-            Assert.IsFalse(GateService.isVenichleAllowed(platenum));
-            Assert.IsTrue(File.ReadAllText(LoggerService.GetInstance().LogFile).Contains("Public transportation vehicles cannot enter the parking lot"));
+            Assert.IsFalse(GateService.GetInstance().isVenichleAllowed(platenum));
+            Assert.IsTrue(GateService.reason.Contains("Public transportation vehicles cannot enter the parking lot"));
 
         }
         [TestMethod]
@@ -21,8 +21,8 @@ namespace PlateLicense
         {
             string filepath = @"..\..\Test Images\Public\public2.png";
             string platenum = ImageToTextService.getImageText(filepath);
-            Assert.IsFalse(GateService.isVenichleAllowed(platenum));
-            Assert.IsTrue(File.ReadAllText(LoggerService.GetInstance().LogFile).Contains("Public transportation vehicles cannot enter the parking lot"));
+            Assert.IsFalse(GateService.GetInstance().isVenichleAllowed(platenum));
+            Assert.IsTrue(GateService.reason.Contains("Public transportation vehicles cannot enter the parking lot"));
         }
         [TestMethod]
 
@@ -32,12 +32,12 @@ namespace PlateLicense
             {
                 string filepath = @"..\..\Test Images\GoodPlates\good1.png";
                 string platenum = ImageToTextService.getImageText(filepath, apiKey: "error");
-                Assert.IsFalse(GateService.isVenichleAllowed(platenum));
+                Assert.IsFalse(GateService.GetInstance().isVenichleAllowed(platenum));
             }
             catch(Exception e)
             {
                 Assert.IsTrue(e.Message.Contains("API ERROR"));
-                Assert.IsTrue(File.ReadAllText(LoggerService.GetInstance().LogFile).Contains("There was some problem to recognize your plate, please take a ticket to enter"));
+                Assert.IsTrue(GateService.reason.Contains("There was some problem to recognize your plate, please take a ticket to enter"));
 
             }
 
@@ -48,8 +48,8 @@ namespace PlateLicense
         {
             string filepath = @"..\..\Test Images\Military\Mili1.png";
             string platenum = ImageToTextService.getImageText(filepath);
-            Assert.IsFalse(GateService.isVenichleAllowed(platenum));
-            Assert.IsTrue(File.ReadAllText(LoggerService.GetInstance().LogFile).Contains("Military and law enforcement vehicles are prohibited"));
+            Assert.IsFalse(GateService.GetInstance().isVenichleAllowed(platenum));
+            Assert.IsTrue(GateService.reason.Contains("Military and law enforcement vehicles are prohibited"));
 
         }
         [TestMethod]
@@ -58,8 +58,8 @@ namespace PlateLicense
         {
             string filepath = @"..\..\Test Images\Military\Mili2.png";
             string platenum = ImageToTextService.getImageText(filepath);
-            Assert.IsFalse(GateService.isVenichleAllowed(platenum));
-            Assert.IsTrue(File.ReadAllText(LoggerService.GetInstance().LogFile).Contains("Military and law enforcement vehicles are prohibited"));
+            Assert.IsFalse(GateService.GetInstance().isVenichleAllowed(platenum));
+            Assert.IsTrue(GateService.reason.Contains("Military and law enforcement vehicles are prohibited"));
         }
         [TestMethod]
 
@@ -67,9 +67,9 @@ namespace PlateLicense
         {
             string filepath = @"..\..\Test Images\GoodPlates\EmptyPlate.png";
             string platenum = ImageToTextService.getImageText(filepath);
-            Assert.IsFalse(GateService.isVenichleAllowed(platenum));
+            Assert.IsFalse(GateService.GetInstance().isVenichleAllowed(platenum));
             Assert.AreEqual(platenum, "");
-            Assert.IsTrue(File.ReadAllText(LoggerService.GetInstance().LogFile).Contains("Plate numbers which have no letters at all, cannot enter"));
+            Assert.IsTrue(GateService.reason.Contains("Plate numbers which have no letters at all, cannot enter"));
         }
         [TestMethod]
 
@@ -77,7 +77,7 @@ namespace PlateLicense
         {
             string filepath = @"..\..\Test Images\GoodPlates\good3.png";
             string platenum = ImageToTextService.getImageText(filepath);
-            Assert.IsTrue(GateService.isVenichleAllowed(platenum));
+            Assert.IsTrue(GateService.GetInstance().isVenichleAllowed(platenum));
         }
         [TestMethod]
 
@@ -86,7 +86,7 @@ namespace PlateLicense
             string filepath = @"..\..\Test Images\GoodPlates\goodWithOthertext.png";
             string platenum = ImageToTextService.getImageText(filepath);
             Assert.AreEqual(platenum, "GYJ-FG4");
-            Assert.IsTrue(GateService.isVenichleAllowed(platenum));
+            Assert.IsTrue(GateService.GetInstance().isVenichleAllowed(platenum));
         }
         [TestMethod]
 
@@ -94,7 +94,7 @@ namespace PlateLicense
         {
             string filepath = @"..\..\Test Images\GoodPlates\good1.png";
             string platenum = ImageToTextService.getImageText(filepath);
-            Assert.IsTrue(GateService.isVenichleAllowed(platenum));
+            Assert.IsTrue(GateService.GetInstance().isVenichleAllowed(platenum));
             ParkingData parkData =  DBService.GetInstance("Plates","AllowedList").FindDataByPlateNumber(platenum);
             Assert.IsTrue(parkData.Allowed);
         }

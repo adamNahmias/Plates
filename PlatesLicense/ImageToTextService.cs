@@ -7,7 +7,7 @@ using RestSharp;
 
 namespace PlateLicense
 {
-    class ImageToTextService
+    public class ImageToTextService
     {
         private static string API_URL = "https://api.ocr.space/parse/image";
 

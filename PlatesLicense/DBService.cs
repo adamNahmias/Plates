@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace PlateLicense
 {
-    class DBService
+    public class DBService
     {
         private string URL_CONN = "mongodb+srv://{0}:{1}@cluster0.ypypl.mongodb.net/{2}.{3}?retryWrites=true&w=majority";
         private string DB_USER = ConfigurationManager.AppSettings["DB_USERNAME"];

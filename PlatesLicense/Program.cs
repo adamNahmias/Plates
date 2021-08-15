@@ -23,7 +23,7 @@ namespace PlateLicense
             else
             {
                 string platenum = ImageToTextService.getImageText(param);
-                GateService.isVenichleAllowed(platenum);
+                GateService.GetInstance().isVenichleAllowed(platenum);
             }
 
             }

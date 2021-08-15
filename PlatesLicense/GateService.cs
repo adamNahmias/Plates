@@ -6,16 +6,37 @@ using System.Threading.Tasks;
 
 namespace PlateLicense
 {
-    class GateService
+    public class GateService
     {
-        public static bool isVenichleAllowed(string plateNumber)
+        public static string reason;
+        public static GateService gateService;
+        private bool allowed;
+
+        public static GateService GetInstance()
         {
-            string reason = "Allowed";
-            bool allowed = true;
+            if (gateService == null)
+            {
+                gateService = new GateService();
+            }
+            else
+            {
+                reason = "";
+            }
+            return gateService;
+        }
+        private GateService()
+        {
+            reason = "";
+        }
+        public bool isVenichleAllowed(string plateNumber)
+        {
+            allowed = true;
+            reason = "Allowed";
             //case API ERROR
             if (plateNumber == "API ERROR")
             {
                 LoggerService.GetInstance().ERROR("There was some problem to recognize your plate, please take a ticket to enter.");
+                reason = "There was some problem to recognize your plate, please take a ticket to enter.";
                 throw new Exception("API ERROR");
             }
             //case emptyPlate

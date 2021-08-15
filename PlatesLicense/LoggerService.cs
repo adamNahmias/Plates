@@ -4,7 +4,7 @@ using System.IO;
 
 namespace PlateLicense
 {
-    class LoggerService
+    public class LoggerService
     {
         private static LoggerService loggerService;
         private static string LogFolder = "C:\\Temp\\PlatesLogs";
