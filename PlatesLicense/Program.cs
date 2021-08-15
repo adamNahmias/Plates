@@ -34,18 +34,34 @@ namespace PlateLicense
         static void Main(string[] args)
         {
 
-            string param = openFileDialogAndReturnFilePath(); 
+            string param = openFileDialogAndReturnFilePath();
+            bool allowed;
             while (param != "exit" && param !=null && param != "")
             {
                 string platenum = ImageToTextService.GetInstance(TextLanguage.English).getImageText(param);
-                bool allowed = GateService.GetInstance().isVenichleAllowed(platenum);
+                try
+                {
+                    allowed = GateService.GetInstance().isVenichleAllowed(platenum);
+
+                }
+                catch
+                {
+                    allowed = false;
+                }
                 if (allowed)
                 {
-                    Console.WriteLine(string.Format("PlateNumber : {0} enter to the parking", platenum));
+                    Console.WriteLine(string.Format("PlateNumber : [{0}] enter to the parking", platenum));
                 }
                 else
                 {
-                    Console.WriteLine(string.Format("PlateNumber : {0} Not Allowed to enter the parking {1}", platenum, GateService.reason));
+                    if(platenum =="API ERROR")
+                    {
+                        Console.WriteLine(GateService.reason);
+                    }
+                    else
+                    {
+                        Console.WriteLine(string.Format("PlateNumber :[{0}] Not Allowed to enter the parking, reason: {1}", platenum, GateService.reason));
+                    }
                 }
                 param = openFileDialogAndReturnFilePath();
             }

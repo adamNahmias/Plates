@@ -44,30 +44,30 @@ namespace PlateLicense
             {
                 reason = "Plate numbers which have no letters at all, cannot enter.";
                 allowed = false;
-                LoggerService.GetInstance().WARNING(string.Format("Plate Number: {0} NOT ALLOWED TO ENTER Reason: {1}", plateNumber, reason));
+                LoggerService.GetInstance().WARNING(string.Format("Plate Number: {0} NOT ALLOWED TO ENTER, Reason: {1}", plateNumber, reason));
             }
             //Military case
             if(plateNumber.EndsWith("L") || plateNumber.EndsWith("M"))
             {
                 reason = "Military and law enforcement vehicles are prohibited";
                 allowed = false;
-                LoggerService.GetInstance().WARNING(string.Format("Plate Number: {0} NOT ALLOWED TO ENTER Reason: {1}", plateNumber, reason));
+                LoggerService.GetInstance().WARNING(string.Format("Plate Number: {0} NOT ALLOWED TO ENTER, Reason: {1}", plateNumber, reason));
             }
             //Public case
             if (plateNumber.EndsWith("6") || plateNumber.EndsWith("G"))
             {
                 reason = "Public transportation vehicles cannot enter the parking lot";
                 allowed = false;
-                LoggerService.GetInstance().WARNING(string.Format("Plate Number: {0} NOT ALLOWED TO ENTER Reason: {1}", plateNumber, reason));
+                LoggerService.GetInstance().WARNING(string.Format("Plate Number: {0} NOT ALLOWED TO ENTER, Reason: {1}", plateNumber, reason));
             }
             DBService.GetInstance("Plates","AllowedList").insertPlateToDB(DateTime.Now ,plateNumber, allowed,reason);
             if (allowed)
             {
-                LoggerService.GetInstance().INFO(string.Format("Plate Number: {0} ENTER TO THE PARKING", plateNumber));
+                LoggerService.GetInstance().INFO(string.Format("Plate Number: [{0}] ENTER TO THE PARKING", plateNumber));
             }
             else
             {
-                LoggerService.GetInstance().INFO(string.Format("Plate Number: {0} NOT ALLOWED TO ENTER THE PARKING", plateNumber));
+                LoggerService.GetInstance().INFO(string.Format("Plate Number: [{0}] NOT ALLOWED TO ENTER THE PARKING", plateNumber));
             }
             return allowed;
         }
