@@ -8,12 +8,15 @@
 4. If you get compile error of missing dependencies or lib(.dll) do the next things:
   a. Make sure you connect the internt 
   b. Open %appdata% folder > go to Nuget > Edit nuget.config file with:
-    **<?xml version="1.0" encoding="utf-8"?>
+  <myxml>
+    <?xml version="1.0" encoding="utf-8"?>
     <configuration>
       <packageSources>
         <add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" />
       </packageSources>
-    </configuration>**
+    </configuration>
+   </myxml>
+    
    c.Back to the project and validate all nuget packges are installed by do thid steps:
     ![image](https://user-images.githubusercontent.com/88496990/128636342-3a1500b0-9c59-4630-a514-16d65eceae40.png)
     ![image](https://user-images.githubusercontent.com/88496990/128636393-d285bea5-631a-4bbb-8dd4-4bb0c24d0ed4.png)
