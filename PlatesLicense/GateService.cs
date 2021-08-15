@@ -8,8 +8,8 @@ namespace PlateLicense
 {
     public class GateService
     {
-        public static string reason;
         public static GateService gateService;
+        public static string reason;
         private bool allowed;
 
         public static GateService GetInstance()

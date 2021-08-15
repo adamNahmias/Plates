@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PlateLicense.TextImage;
 
 namespace PlateLicense
 {
@@ -11,7 +12,7 @@ namespace PlateLicense
         public void TestPublicPlate1()
         {
             string filepath = @"..\..\Test Images\Public\public1.png";
-            string platenum = ImageToTextService.getImageText(filepath);
+            string platenum = ImageToTextService.GetInstance(TextLanguage.English).getImageText(filepath);
             Assert.IsFalse(GateService.GetInstance().isVenichleAllowed(platenum));
             Assert.IsTrue(GateService.reason.Contains("Public transportation vehicles cannot enter the parking lot"));
 
@@ -20,7 +21,7 @@ namespace PlateLicense
         public void TestPublicPlate2()
         {
             string filepath = @"..\..\Test Images\Public\public2.png";
-            string platenum = ImageToTextService.getImageText(filepath);
+            string platenum = ImageToTextService.GetInstance(TextLanguage.English).getImageText(filepath);
             Assert.IsFalse(GateService.GetInstance().isVenichleAllowed(platenum));
             Assert.IsTrue(GateService.reason.Contains("Public transportation vehicles cannot enter the parking lot"));
         }
@@ -31,7 +32,7 @@ namespace PlateLicense
             try
             {
                 string filepath = @"..\..\Test Images\GoodPlates\good1.png";
-                string platenum = ImageToTextService.getImageText(filepath, apiKey: "error");
+                string platenum = ImageToTextService.GetInstance(TextLanguage.English).getImageText(filepath, apiKey: "error");
                 Assert.IsFalse(GateService.GetInstance().isVenichleAllowed(platenum));
             }
             catch(Exception e)
@@ -47,7 +48,7 @@ namespace PlateLicense
         public void testMilitaryPlate1()
         {
             string filepath = @"..\..\Test Images\Military\Mili1.png";
-            string platenum = ImageToTextService.getImageText(filepath);
+            string platenum = ImageToTextService.GetInstance(TextLanguage.English).getImageText(filepath);
             Assert.IsFalse(GateService.GetInstance().isVenichleAllowed(platenum));
             Assert.IsTrue(GateService.reason.Contains("Military and law enforcement vehicles are prohibited"));
 
@@ -57,7 +58,7 @@ namespace PlateLicense
         public void testMilitaryPlate2()
         {
             string filepath = @"..\..\Test Images\Military\Mili2.png";
-            string platenum = ImageToTextService.getImageText(filepath);
+            string platenum = ImageToTextService.GetInstance(TextLanguage.English).getImageText(filepath);
             Assert.IsFalse(GateService.GetInstance().isVenichleAllowed(platenum));
             Assert.IsTrue(GateService.reason.Contains("Military and law enforcement vehicles are prohibited"));
         }
@@ -66,7 +67,7 @@ namespace PlateLicense
         public void testEmptyPlate()
         {
             string filepath = @"..\..\Test Images\GoodPlates\EmptyPlate.png";
-            string platenum = ImageToTextService.getImageText(filepath);
+            string platenum = ImageToTextService.GetInstance(TextLanguage.English).getImageText(filepath);
             Assert.IsFalse(GateService.GetInstance().isVenichleAllowed(platenum));
             Assert.AreEqual(platenum, "");
             Assert.IsTrue(GateService.reason.Contains("Plate numbers which have no letters at all, cannot enter"));
@@ -76,7 +77,7 @@ namespace PlateLicense
         public void testGoodPlate()
         {
             string filepath = @"..\..\Test Images\GoodPlates\good3.png";
-            string platenum = ImageToTextService.getImageText(filepath);
+            string platenum = ImageToTextService.GetInstance(TextLanguage.English).getImageText(filepath);
             Assert.IsTrue(GateService.GetInstance().isVenichleAllowed(platenum));
         }
         [TestMethod]
@@ -84,7 +85,7 @@ namespace PlateLicense
         public void testGoodPlateWithOtherText()
         {
             string filepath = @"..\..\Test Images\GoodPlates\goodWithOthertext.png";
-            string platenum = ImageToTextService.getImageText(filepath);
+            string platenum = ImageToTextService.GetInstance(TextLanguage.English).getImageText(filepath);
             Assert.AreEqual(platenum, "GYJ-FG4");
             Assert.IsTrue(GateService.GetInstance().isVenichleAllowed(platenum));
         }
@@ -93,7 +94,7 @@ namespace PlateLicense
         public void testInsertToDB()
         {
             string filepath = @"..\..\Test Images\GoodPlates\good1.png";
-            string platenum = ImageToTextService.getImageText(filepath);
+            string platenum = ImageToTextService.GetInstance(TextLanguage.English).getImageText(filepath);
             Assert.IsTrue(GateService.GetInstance().isVenichleAllowed(platenum));
             ParkingData parkData =  DBService.GetInstance("Plates","AllowedList").FindDataByPlateNumber(platenum);
             Assert.IsTrue(parkData.Allowed);
@@ -103,7 +104,7 @@ namespace PlateLicense
         public void testGetTextFromImage()
         {
             string filepath = @"..\..\Test Images\GoodPlates\good2.png";
-            string platenum = ImageToTextService.getImageText(filepath);
+            string platenum = ImageToTextService.GetInstance(TextLanguage.English).getImageText(filepath);
             Assert.AreEqual(platenum, "GHYKNY");
         }       
     }

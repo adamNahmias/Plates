@@ -1,33 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PlateLicense.TextImage;
+using System;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace PlateLicense
 {
     class Program
     {
+        public static string openFileDialogAndReturnFilePath()
+        {
+            string selectedPath = "";
+
+            Thread t = new Thread((ThreadStart)(() => {
+                OpenFileDialog saveFileDialog1 = new OpenFileDialog();
+
+                saveFileDialog1.Filter = "png Files (*.png)|*.png";
+                saveFileDialog1.FilterIndex = 2;
+                saveFileDialog1.RestoreDirectory = true;
+
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    selectedPath = saveFileDialog1.FileName;
+                }
+            }));
+
+            // Run your code from a thread that joins the STA Thread
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+            t.Join();
+
+            return selectedPath;
+        }
         static void Main(string[] args)
         {
-            string param = "";
-            try
+
+            string param = openFileDialogAndReturnFilePath(); 
+            while (param != "exit" && param !=null && param != "")
             {
-                param = args[0];
-            }
-            catch { }
-            if(param == "" || param == "/help" || param == null)
-            {
-                Console.WriteLine("PlateLicense.exe [imagePath]");
-            }
-            else
-            {
-                string platenum = ImageToTextService.getImageText(param);
-                GateService.GetInstance().isVenichleAllowed(platenum);
+                string platenum = ImageToTextService.GetInstance(TextLanguage.English).getImageText(param);
+                bool allowed = GateService.GetInstance().isVenichleAllowed(platenum);
+                if (allowed)
+                {
+                    Console.WriteLine(string.Format("PlateNumber : {0} enter to the parking", platenum));
+                }
+                else
+                {
+                    Console.WriteLine(string.Format("PlateNumber : {0} Not Allowed to enter the parking {1}", platenum, GateService.reason));
+                }
+                param = openFileDialogAndReturnFilePath();
             }
 
-            }
-       
         }
     }
+}
 

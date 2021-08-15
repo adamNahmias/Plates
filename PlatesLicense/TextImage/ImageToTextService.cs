@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,28 +10,48 @@ namespace PlateLicense
 {
     public class ImageToTextService
     {
-        private static string API_URL = "https://api.ocr.space/parse/image";
+        private static ImageToTextService imageToTextService;
+        private string API_URL = ConfigurationManager.AppSettings["API_URL"];
+        private RestClient client;
+        private string language;
 
-        public static string getImageText(string filepath,string apiKey= "helloworld")
+        public static ImageToTextService GetInstance(string language)
         {
-            if (!File.Exists(filepath))
+            if (imageToTextService == null || !language.Equals(imageToTextService.language))
             {
-                LoggerService.GetInstance().ERROR(string.Format("Image was not found,filepath: {0}",filepath));
-                throw(new Exception(string.Format("Image was not found,filepath: {0}", filepath)));
+                imageToTextService = new ImageToTextService(language);
             }
+            return imageToTextService;
+        }
+        private ImageToTextService(string language)
+        {
+            client = new RestClient(API_URL);
+            this.language = language;
+        }
+
+        public string getImageText(string filepath, string apiKey= "helloworld")
+        {
             double bestTextHigh = 0;
-            string boldAndbestSizeWord = "";
-            var client = new RestClient(API_URL);
+            string mostBoldedWord = "";
+            //request params
             var request = new RestRequest(Method.POST);
             request.AddParameter("language", "eng");
             request.AddFile("file", filepath);
             request.AddParameter("isCreateSearchablePdf", "true");
             request.AddParameter("isSearchablePdfHideTextLayer", "true");
             request.AddParameter("apikey", apiKey);
+
+            //Check if picture exist
+            if (!File.Exists(filepath))
+            {
+                LoggerService.GetInstance().ERROR(string.Format("Image was not found,filepath: {0}",filepath));
+                throw(new Exception(string.Format("Image was not found,filepath: {0}", filepath)));
+            }
+
             try
             {              
                 IRestResponse response = client.Execute(request);
-                Assert.IsTrue(response.StatusCode.Equals(HttpStatusCode.OK),response.Content);
+                Assert.IsTrue(response.StatusCode.Equals(HttpStatusCode.OK), response.Content);
                 dynamic result = JsonConvert.DeserializeObject(response.Content);
                 //empty plate
                 try
@@ -45,17 +66,17 @@ namespace PlateLicense
                 {
                     LoggerService.GetInstance().WARNING("Not empty case,continue to parse plate number");
                 }
-                //Get the most bold text
+                //Get the most bolded text
                 foreach (dynamic data in result["ParsedResults"][0]["TextOverlay"]["Lines"])
                 {
-                    string wordHigh = data["Words"][0]["Height"];
-                    if (double.Parse(wordHigh) > bestTextHigh)
+                    string wordHeight = data["Words"][0]["Height"];
+                    if (double.Parse(wordHeight) > bestTextHigh)
                     {
-                        bestTextHigh = double.Parse(wordHigh);
-                        boldAndbestSizeWord = data["LineText"];
+                        bestTextHigh = double.Parse(wordHeight);
+                        mostBoldedWord = data["LineText"];
                     }
                 }
-                return boldAndbestSizeWord;
+                return mostBoldedWord;
             }
             catch(Exception e)
             {
