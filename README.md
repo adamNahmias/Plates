@@ -25,8 +25,11 @@
    
  #**Application**
  
- You can use the application by run plateLicense.exe [PathToSomeImageOfPlate].
- The app will parse the text, then write to DB the action,and write the actions to the log files.
+PlateLicense.exe are open a windows path dialog, while you choose some picture from dialog the program will recognize the text from the pic, and check if the generated text(of plate number in our case) allowed to enter the parking. and also write each desicion to DB and the log file.
+For exit just close the dialog box without choose nothing.
+ 
+ ![image](https://user-images.githubusercontent.com/88496990/129480049-1dbc65d5-f8e9-426d-b375-5e088c289ede.png)
+
  
  **#LogFile**
  
