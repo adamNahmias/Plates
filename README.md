@@ -9,12 +9,14 @@
   a. Make sure you connect the internt 
   b. Open %appdata% folder > go to Nuget > Edit nuget.config file with:
   
+  ~~~ xml
     <?xml version="1.0" encoding="utf-8"?>
     <configuration>
       <packageSources>
         <add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" />
       </packageSources>
     </configuration>
+~~~
     
    c.Back to the project and validate all nuget packges are installed by do thid steps:
     ![image](https://user-images.githubusercontent.com/88496990/128636342-3a1500b0-9c59-4630-a514-16d65eceae40.png)
