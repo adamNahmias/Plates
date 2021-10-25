@@ -50,7 +50,7 @@ namespace PlateLicense
                 }
                 if (allowed)
                 {
-                    Console.WriteLine(string.Format("PlateNumber : [{0}] enter to the parking", platenum));
+                    Console.WriteLine(string.Format("PlateNumber : [{0}] enter to the parking : ", platenum));
                 }
                 else
                 {
